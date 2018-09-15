@@ -12,7 +12,7 @@ Runs on free services (hopefully forever)
 Uptime pings:
 https://reat-estate-scraper.herokuapp.com/api/v1/health
 
-Returns properties with points:
+Returns last 100 properties with points:
 https://reat-estate-scraper.herokuapp.com/api/v1/property
 
 ## Check logs:

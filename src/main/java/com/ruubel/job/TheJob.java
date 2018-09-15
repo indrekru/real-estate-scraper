@@ -25,7 +25,7 @@ public class TheJob {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36";
-    private final static String url = "https://kinnisvaraportaal-kv-ee.postimees.ee/?act=search.simple&last_deal_type=1&company_id=&page=1&orderby=cdwl&page_size=50&deal_type=1&dt_select=1&county=1&search_type=new&parish=1061&rooms_min=&rooms_max=&price_min=&price_max=1+500&price_type=2&nr_of_people=&area_min=&area_max=&floor_min=&floor_max=&energy_certs=&keyword=";//"https://kinnisvaraportaal-kv-ee.postimees.ee/?act=search.simple&last_deal_type=1&company_id=&page=1&orderby=cdwl&page_size=50&deal_type=1&dt_select=1&county=1&search_type=new&parish=1061&rooms_min=&rooms_max=&price_min=&price_max=&nr_of_people=&area_min=&area_max=&floor_min=&floor_max=&energy_certs=&keyword=";
+    private final static String url = "https://kinnisvaraportaal-kv-ee.postimees.ee/?act=search.simple&last_deal_type=1&company_id=&page=1&orderby=cdwl&page_size=50&deal_type=1&dt_select=1&county=1&search_type=new&parish=1061&rooms_min=&rooms_max=&price_min=&price_max=&nr_of_people=&area_min=&area_max=&floor_min=&floor_max=&energy_certs=&keyword=";
 
     private PropertyService propertyService;
     private MailService mailService;
@@ -40,7 +40,7 @@ public class TheJob {
         this.mailService = mailService;
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?") // Every 30 minutes
+    @Scheduled(cron = "0 0/20 * * * ?") // Every 20 minutes
     public void run() {
         log.info("Running job");
         Document document = getDocument(url);

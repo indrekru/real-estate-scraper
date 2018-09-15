@@ -10,3 +10,9 @@ Runs on free services (hopefully forever)
 * UptimeRobot - polls heroku health endpoint to keep it alive
 
 https://reat-estate-scraper.herokuapp.com/api/v1/health
+
+## Check logs:
+`heroku logs -tail -a reat-estate-scraper`
+
+## Deploy
+`git push heroku master`

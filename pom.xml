@@ -49,7 +49,6 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <start-class>com.ruubel.Main</start-class>
     </properties>
 
 

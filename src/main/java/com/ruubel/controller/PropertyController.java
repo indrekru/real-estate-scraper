@@ -2,7 +2,7 @@ package com.ruubel.controller;
 
 import com.ruubel.model.Property;
 import com.ruubel.service.GradingService;
-import com.ruubel.service.IPropertyService;
+import com.ruubel.service.property.IPropertyService;
 import com.ruubel.util.ScraperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class PropertyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Map<String, Object>>> getProperties() {
+    public ResponseEntity<List<Map<String, Object>>> getTop100LastProperties() {
         List<Property> properties = propertyService.findAllTop100ByOrderByDateCreatedDesc();
 
         List<Map<String, Object>> out = new ArrayList<>();

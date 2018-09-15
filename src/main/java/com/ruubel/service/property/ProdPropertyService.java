@@ -1,4 +1,4 @@
-package com.ruubel.service;
+package com.ruubel.service.property;
 
 import com.ruubel.repository.PropertyRepository;
 import org.springframework.context.annotation.Profile;

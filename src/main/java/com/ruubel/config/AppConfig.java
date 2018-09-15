@@ -8,13 +8,13 @@ import java.util.TimeZone;
 @Configuration
 public class AppConfig {
 
-    public void configureUTC() {
+    public void configureUtc() {
         TimeZone.setDefault(TimeZone.getTimeZone("Etc/UTC"));
     }
 
     @PostConstruct
     public void init() {
-        configureUTC();
+        configureUtc();
     }
 
 }

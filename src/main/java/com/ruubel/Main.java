@@ -1,6 +1,6 @@
 package com.ruubel;
 
-import com.ruubel.job.TheJob;
+import com.ruubel.job.ScrapeJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class Main implements CommandLineRunner {
 
     @Autowired
-    TheJob theJob;
+    ScrapeJob scrapeJob;
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -20,6 +20,6 @@ public class Main implements CommandLineRunner {
 
     @Override
     public void run(String... strings) {
-        theJob.run();
+        scrapeJob.run();
     }
 }

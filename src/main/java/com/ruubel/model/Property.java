@@ -16,7 +16,7 @@ public class Property {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "source")
-    private PropertySource source;
+    private ScrapeSource source;
 
     @Column(name = "external_id", unique = true)
     private String externalId;
@@ -51,7 +51,7 @@ public class Property {
     public Property() {
     }
 
-    public Property(PropertySource source, String externalId, String title, Integer rooms, Long price, Integer floor, Double area, Double latitude, Double longitude, Boolean notified) {
+    public Property(ScrapeSource source, String externalId, String title, Integer rooms, Long price, Integer floor, Double area, Double latitude, Double longitude, Boolean notified) {
         this.source = source;
         this.externalId = externalId;
         this.title = title;
@@ -69,7 +69,7 @@ public class Property {
         return id;
     }
 
-    public PropertySource getSource() {
+    public ScrapeSource getSource() {
         return source;
     }
 

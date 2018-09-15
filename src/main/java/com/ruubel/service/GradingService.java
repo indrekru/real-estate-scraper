@@ -12,7 +12,6 @@ public class GradingService {
     public static Double LONGITUDE_TLN = 24.753574699999945;
 
     public int calculatePreliminaryPoints(Property property) {
-        // Grading
         int points = 0;
         if (property.getPrice() < 65000) {
             points++;
@@ -24,7 +23,7 @@ public class GradingService {
             points++;
         }
 
-        if (property.getArea() > 30) {
+        if (property.getArea() >= 30) {
             points++;
         }
 

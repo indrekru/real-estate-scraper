@@ -1,7 +1,7 @@
 package com.ruubel.job;
 
 import com.ruubel.model.Property;
-import com.ruubel.service.IPropertyService;
+import com.ruubel.service.property.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

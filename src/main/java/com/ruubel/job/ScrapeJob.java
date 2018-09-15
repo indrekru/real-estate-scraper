@@ -1,10 +1,10 @@
 package com.ruubel.job;
 
 import com.ruubel.model.Property;
-import com.ruubel.model.PropertySource;
+import com.ruubel.model.ScrapeSource;
 import com.ruubel.service.GradingService;
-import com.ruubel.service.IPropertyService;
-import com.ruubel.service.MailService;
+import com.ruubel.service.property.IPropertyService;
+import com.ruubel.service.MailingService;
 import com.ruubel.util.ScraperUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 @Component
-public class TheJob {
+public class ScrapeJob {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -32,13 +32,13 @@ public class TheJob {
     private String url;
 
     private IPropertyService propertyService;
-    private MailService mailService;
+    private MailingService mailingService;
     private GradingService gradingService;
 
     @Autowired
-    public TheJob(IPropertyService propertyService, MailService mailService, GradingService gradingService) {
+    public ScrapeJob(IPropertyService propertyService, MailingService mailingService, GradingService gradingService) {
         this.propertyService = propertyService;
-        this.mailService = mailService;
+        this.mailingService = mailingService;
         this.gradingService = gradingService;
     }
 
@@ -88,7 +88,7 @@ public class TheJob {
 
                 Double latitude = null, longitude = null;
 
-                dbProperty = new Property(PropertySource.KV, externalId, title, rooms, price, floor, area, latitude, longitude, false);
+                dbProperty = new Property(ScrapeSource.KV, externalId, title, rooms, price, floor, area, latitude, longitude, false);
 
                 // Grading
                 int points = gradingService.calculatePreliminaryPoints(dbProperty);
@@ -117,7 +117,7 @@ public class TheJob {
 
                 if (points > 4) {
                     log.info("Notifying : " + propertyUrl);
-                    mailService.notifyQualifiedProperty(propertyUrl);
+                    mailingService.notifyQualifiedProperty(propertyUrl);
                     dbProperty.setNotified(true);
                     propertyService.save(dbProperty);
                 }
@@ -127,7 +127,7 @@ public class TheJob {
 
         } catch (Exception e) {
             e.printStackTrace();
-            mailService.notifyCrash();
+            mailingService.notifyCrash();
         }
     }
 

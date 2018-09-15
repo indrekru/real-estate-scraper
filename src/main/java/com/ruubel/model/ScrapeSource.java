@@ -1,5 +1,5 @@
 package com.ruubel.model;
 
-public enum PropertySource {
+public enum ScrapeSource {
     KV
 }

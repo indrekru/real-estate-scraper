@@ -2,7 +2,7 @@ package com.ruubel.controller;
 
 import com.ruubel.model.Property;
 import com.ruubel.service.GradingService;
-import com.ruubel.service.PropertyService;
+import com.ruubel.service.IPropertyService;
 import com.ruubel.util.ScraperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +20,11 @@ import java.util.Map;
 @RequestMapping("/api/v1/property")
 public class PropertyController {
 
-    private PropertyService propertyService;
+    private IPropertyService propertyService;
     private GradingService gradingService;
 
     @Autowired
-    public PropertyController(PropertyService propertyService, GradingService gradingService) {
+    public PropertyController(IPropertyService propertyService, GradingService gradingService) {
         this.propertyService = propertyService;
         this.gradingService = gradingService;
     }

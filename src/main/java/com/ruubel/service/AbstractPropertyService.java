@@ -3,18 +3,16 @@ package com.ruubel.service;
 import com.ruubel.model.Property;
 import com.ruubel.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 
-@Service
-public class PropertyService {
+abstract class AbstractPropertyService implements IPropertyService {
 
-    private PropertyRepository propertyRepository;
+    protected PropertyRepository propertyRepository;
 
     @Autowired
-    public PropertyService(PropertyRepository propertyRepository) {
+    public AbstractPropertyService(PropertyRepository propertyRepository) {
         this.propertyRepository = propertyRepository;
     }
 

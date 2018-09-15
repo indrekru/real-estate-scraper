@@ -1,13 +1,7 @@
 package com.ruubel.job;
 
 import com.ruubel.model.Property;
-import com.ruubel.model.PropertySource;
-import com.ruubel.service.MailService;
-import com.ruubel.service.PropertyService;
-import com.ruubel.util.ScraperUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.ruubel.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +20,10 @@ public class CleanupJob {
      * Cleans up the DB from older entries, otherwise this might NOT go on forever...
      */
 
-    private PropertyService propertyService;
+    private IPropertyService propertyService;
 
     @Autowired
-    public CleanupJob(PropertyService propertyService) {
+    public CleanupJob(IPropertyService propertyService) {
         this.propertyService = propertyService;
     }
 

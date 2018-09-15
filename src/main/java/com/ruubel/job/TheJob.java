@@ -3,8 +3,8 @@ package com.ruubel.job;
 import com.ruubel.model.Property;
 import com.ruubel.model.PropertySource;
 import com.ruubel.service.GradingService;
+import com.ruubel.service.IPropertyService;
 import com.ruubel.service.MailService;
-import com.ruubel.service.PropertyService;
 import com.ruubel.util.ScraperUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -26,14 +27,16 @@ public class TheJob {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36";
-    private final static String url = "https://kinnisvaraportaal-kv-ee.postimees.ee/?act=search.simple&last_deal_type=1&company_id=&page=1&orderby=cdwl&page_size=50&deal_type=1&dt_select=1&county=1&search_type=new&parish=1061&rooms_min=&rooms_max=&price_min=&price_max=&nr_of_people=&area_min=&area_max=&floor_min=&floor_max=&energy_certs=&keyword=";
 
-    private PropertyService propertyService;
+    @Value("${scraping.url}")
+    private String url;
+
+    private IPropertyService propertyService;
     private MailService mailService;
     private GradingService gradingService;
 
     @Autowired
-    public TheJob(PropertyService propertyService, MailService mailService, GradingService gradingService) {
+    public TheJob(IPropertyService propertyService, MailService mailService, GradingService gradingService) {
         this.propertyService = propertyService;
         this.mailService = mailService;
         this.gradingService = gradingService;

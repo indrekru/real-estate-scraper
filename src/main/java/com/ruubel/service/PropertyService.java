@@ -33,4 +33,8 @@ public class PropertyService {
     public void delete(Property property) {
         propertyRepository.delete(property);
     }
+
+    public List<Property> findAllTop100ByOrderByDateCreatedDesc() {
+        return propertyRepository.findAllTop100ByOrderByDateCreatedDesc();
+    }
 }

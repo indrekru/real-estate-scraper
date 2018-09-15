@@ -2,6 +2,7 @@ package com.ruubel.job;
 
 import com.ruubel.model.Property;
 import com.ruubel.model.PropertySource;
+import com.ruubel.service.GradingService;
 import com.ruubel.service.MailService;
 import com.ruubel.service.PropertyService;
 import com.ruubel.util.ScraperUtils;
@@ -29,15 +30,13 @@ public class TheJob {
 
     private PropertyService propertyService;
     private MailService mailService;
-
-    // Center of Tallinn
-    private Double latitudeTln = 59.43696079999999;
-    private Double longitudTln = 24.753574699999945;
+    private GradingService gradingService;
 
     @Autowired
-    public TheJob(PropertyService propertyService, MailService mailService) {
+    public TheJob(PropertyService propertyService, MailService mailService, GradingService gradingService) {
         this.propertyService = propertyService;
         this.mailService = mailService;
+        this.gradingService = gradingService;
     }
 
     @Scheduled(cron = "0 0/20 * * * ?") // Every 20 minutes
@@ -82,33 +81,14 @@ public class TheJob {
                     floor = Integer.parseInt(floors[0]);
                 }
 
-                Double pricePerSqm = price / area;
-
                 String propertyUrl = String.format("http://www.kv.ee/%s", externalId);
 
+                Double latitude = null, longitude = null;
+
+                dbProperty = new Property(PropertySource.KV, externalId, title, rooms, price, floor, area, latitude, longitude, false);
+
                 // Grading
-                int points = 0;
-                if (price < 65000) {
-                    points++;
-                }
-
-                if (pricePerSqm < 1500){
-                    points++;
-                }
-
-                if (area > 30) {
-                    points++;
-                }
-
-                if (rooms >= 1) {
-                    points++;
-                }
-
-                if (floor > 1) {
-                    points++;
-                }
-
-                Double distance, latitude = null, longitude = null;
+                int points = gradingService.calculatePreliminaryPoints(dbProperty);
 
                 if (points > 4){
                     // Interesting, fetch location
@@ -124,17 +104,15 @@ public class TheJob {
                     latitude = Double.parseDouble(coordsArr[0]);
                     longitude = Double.parseDouble(coordsArr[1]);
 
-                    distance = ScraperUtils.distance(latitudeTln, latitude, longitudTln, longitude);
+                    dbProperty.setLatitude(latitude);
+                    dbProperty.setLongitude(longitude);
 
-                    if (distance < 3500) {
-                        points++;
-                    }
+                    points += gradingService.calculateDistancePoints(dbProperty);
                 }
 
-                dbProperty = new Property(PropertySource.KV, externalId, title, rooms, price, floor, area, latitude, longitude, false);
                 propertyService.save(dbProperty);
 
-                if (points > 5) {
+                if (points > 4) {
                     log.info("Notifying : " + propertyUrl);
                     mailService.notifyQualifiedProperty(propertyUrl);
                     dbProperty.setNotified(true);

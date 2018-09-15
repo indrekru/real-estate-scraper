@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface PropertyRepository extends JpaRepository<Property, UUID> {
     Property findByExternalId(String externalId);
     List<Property> findByDateCreatedLessThan(Instant date);
+    List<Property> findAllTop100ByOrderByDateCreatedDesc();
 }

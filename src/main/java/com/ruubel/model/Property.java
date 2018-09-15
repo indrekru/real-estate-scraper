@@ -116,4 +116,12 @@ public class Property {
     public void setNotified(Boolean notified) {
         this.notified = notified;
     }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 }

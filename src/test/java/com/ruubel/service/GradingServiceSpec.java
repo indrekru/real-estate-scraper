@@ -54,6 +54,15 @@ public class GradingServiceSpec {
     }
 
     @Test
+    public void whenRoomsAndPriceNotFloorCriteriaMatches_then2PointsGiven(){
+        Property property = new Property(ScrapeSource.KV, "122", "title", 1, 64000l, 6, 29.5, 52.4534, 29.232, false);
+
+        int points = gradingService.calculatePreliminaryPoints(property);
+
+        assertEquals(2, points);
+    }
+
+    @Test
     public void whenRoomsAndPriceAndFloorAndAreaCriteriaMatches_then4PointsGiven(){
         Property property = new Property(ScrapeSource.KV, "122", "title", 1, 64000l, 2, 30.0, 52.4534, 29.232, false);
 

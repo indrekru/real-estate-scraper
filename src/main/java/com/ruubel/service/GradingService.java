@@ -31,7 +31,7 @@ public class GradingService {
             points++;
         }
 
-        if (property.getFloor() > 1) {
+        if (property.getFloor() > 1 && property.getFloor() <= 5) {
             points++;
         }
         return points;

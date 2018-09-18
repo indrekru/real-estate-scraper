@@ -133,6 +133,7 @@ public class ScrapeJob {
 
     private Document getDocument(String url) {
         Connection connection = Jsoup.connect(url);
+        connection.validateTLSCertificates(false);
         connection.timeout(6000);
         connection.method(Connection.Method.GET);
         connection.userAgent(userAgent);

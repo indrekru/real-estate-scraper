@@ -77,12 +77,14 @@ public class ScrapeJob {
                 Element descriptionElement = property.select("p.object-excerpt").get(0);
                 String descriptionText = descriptionElement.text();
                 Integer floor = 1; // Shittiest floor ever
-                if (descriptionText.contains("Korrus ")) {
+                try {
                     String floorStrWar = descriptionText.substring(descriptionText.indexOf("Korrus ") + 7, descriptionText.indexOf(","));
                     if (floorStrWar.contains("/")) {
                         String[] floors = floorStrWar.split("/");
                         floor = Integer.parseInt(floors[0]);
                     }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
 
                 String propertyUrl = String.format("http://www.kv.ee/%s", externalId);

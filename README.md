@@ -1,4 +1,4 @@
-# real-estate-scraper
+# Real Estate Scraper
 
 Scrapes real estate website and lets me know if anything interesting worth looking at.
 

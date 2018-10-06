@@ -102,18 +102,21 @@ public class ScrapeJob {
 
                     Document propertyDocument = getDocument(propertyUrl);
 
-                    Element mapImg = propertyDocument.select("a.gtm-object-map").get(0);
-                    String imgUrl = mapImg.attr("href");
-                    String coords = imgUrl.substring(imgUrl.indexOf("query=") + 6, imgUrl.length());
-                    String[] coordsArr = coords.split(",");
+                    Elements mapImgs = propertyDocument.select("a.gtm-object-map");
+                    if (mapImgs.size() > 0) {
+                        Element mapImg = mapImgs.get(0);
+                        String imgUrl = mapImg.attr("href");
+                        String coords = imgUrl.substring(imgUrl.indexOf("query=") + 6, imgUrl.length());
+                        String[] coordsArr = coords.split(",");
 
-                    latitude = Double.parseDouble(coordsArr[0]);
-                    longitude = Double.parseDouble(coordsArr[1]);
+                        latitude = Double.parseDouble(coordsArr[0]);
+                        longitude = Double.parseDouble(coordsArr[1]);
 
-                    dbProperty.setLatitude(latitude);
-                    dbProperty.setLongitude(longitude);
+                        dbProperty.setLatitude(latitude);
+                        dbProperty.setLongitude(longitude);
 
-                    points += gradingService.calculateDistancePoints(dbProperty);
+                        points += gradingService.calculateDistancePoints(dbProperty);
+                    }
                 }
 
                 propertyService.save(dbProperty);

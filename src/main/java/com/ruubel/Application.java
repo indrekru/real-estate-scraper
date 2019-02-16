@@ -9,13 +9,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-public class Main implements CommandLineRunner {
+public class Application implements CommandLineRunner {
 
     @Autowired
-    ScrapeJob scrapeJob;
+    private ScrapeJob scrapeJob;
 
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     @Override

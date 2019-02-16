@@ -1,4 +1,5 @@
-# Real Estate Scraper [![CircleCI](https://circleci.com/gh/indrekru/design-patterns-spring-boot.svg?style=svg)](https://circleci.com/gh/indrekru/design-patterns-spring-boot) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20design%20patterns%20in%20spring%20boot%20https%3A%2F%2Fgithub.com%2Findrekru%2Fdesign-patterns-spring-boot)
+# Real Estate Scraper 
+[![CircleCI](https://circleci.com/gh/indrekru/real-estate-scraper.svg?style=svg)](https://circleci.com/gh/indrekru/real-estate-scraper)
 
 Scrapes real estate website, saves the records and lets me know if anything interesting worth looking at.
 Runs on a scheduler to scrape periodically and clean up every midnight at least 5 days old properties.

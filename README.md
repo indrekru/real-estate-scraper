@@ -1,6 +1,8 @@
 # Real Estate Scraper 
 [![CircleCI](https://circleci.com/gh/indrekru/real-estate-scraper.svg?style=svg)](https://circleci.com/gh/indrekru/real-estate-scraper)
 
+<img src="https://raw.githubusercontent.com/indrekru/real-estate-scraper/master/img.png" width="200px">
+
 Scrapes real estate website, saves the records and lets me know if anything interesting worth looking at.
 Runs on a scheduler to scrape periodically and clean up every midnight at least 5 days old properties.
 Runs on free services (hopefully forever)

@@ -15,10 +15,10 @@ Self driving scraper, sometimes emails me.
 * UptimeRobot - polls heroku health endpoint to keep it alive
 
 Uptime pings:
-https://reat-estate-scraper.herokuapp.com/api/v1/health
+https://real-estate-scraper1.herokuapp.com/api/v1/health
 
 Returns last 100 properties with points:
-https://reat-estate-scraper.herokuapp.com/api/v1/property
+https://real-estate-scraper1.herokuapp.com/api/v1/property
 
 ## Getting Started
 
@@ -81,7 +81,7 @@ git push heroku master
 Check the prod logs:
 
 ```
-heroku logs -tail -a reat-estate-scraper
+heroku logs -tail -a real-estate-scraper1
 ```
 
 ## Built With

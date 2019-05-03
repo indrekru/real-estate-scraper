@@ -25,8 +25,10 @@ public class GradingService {
     };
     public final static String[] discouragingWords = new String[]{
         "lasnamägi",
+        "lasnamäe",
         "nõmme",
-        "õismägi"
+        "õismägi",
+        "õismäe"
     };
 
     // Max points possible 6

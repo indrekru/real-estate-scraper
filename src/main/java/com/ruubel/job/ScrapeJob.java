@@ -76,7 +76,7 @@ public class ScrapeJob {
 
                 Element descriptionElement = property.select("p.object-excerpt").get(0);
                 String descriptionText = descriptionElement.text();
-                Integer floor = 1; // Shittiest floor ever
+                Integer floor = 0; // Shittiest floor ever
                 try {
                     String floorStrWar = descriptionText.substring(descriptionText.indexOf("Korrus ") + 7, descriptionText.indexOf(","));
                     if (floorStrWar.contains("/")) {
@@ -93,7 +93,7 @@ public class ScrapeJob {
 
                 dbProperty = new Property(ScrapeSource.KV, externalId, title, rooms, price, floor, area, latitude, longitude, false);
 
-                // Grading
+                // Grading, max points 6
                 int points = gradingService.calculatePreliminaryPoints(dbProperty);
 
                 if (points > 4){

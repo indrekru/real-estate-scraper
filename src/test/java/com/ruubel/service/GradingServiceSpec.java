@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
+import static com.ruubel.service.GradingService.*;
 
 @RunWith(SpringRunner.class)
 public class GradingServiceSpec {
@@ -20,10 +21,10 @@ public class GradingServiceSpec {
     @Test
     public void whenNoCriteriaMatches_then0PointsGiven(){
         Property property = new Property(ScrapeSource.KV, "122", "title",
-                gradingService.MIN_ROOMS - 1,
-                gradingService.MAX_PRICE + 1,
-                gradingService.MIN_FLOOR - 1,
-                gradingService.MIN_AREA - 1.0,
+                MIN_ROOMS - 1,
+                MAX_PRICE + 1,
+                MIN_FLOOR - 1,
+                MIN_AREA - 1.0,
                 52.4534, 29.232,
                 false);
 
@@ -35,10 +36,10 @@ public class GradingServiceSpec {
     @Test
     public void whenRoomsCriteriaMatches_then1PointsGiven(){
         Property property = new Property(ScrapeSource.KV, "122", "title",
-                gradingService.MIN_ROOMS,
-                gradingService.MAX_PRICE + 1,
-                gradingService.MIN_FLOOR - 1,
-                gradingService.MIN_AREA - 1.0,
+                MIN_ROOMS,
+                MAX_PRICE + 1,
+                MIN_FLOOR - 1,
+                MIN_AREA - 1.0,
                 52.4534, 29.232,
                 false);
 
@@ -50,10 +51,10 @@ public class GradingServiceSpec {
     @Test
     public void whenRoomsAndPriceCriteriaMatches_then2PointsGiven(){
         Property property = new Property(ScrapeSource.KV, "122", "title",
-                gradingService.MIN_ROOMS,
-                gradingService.MAX_PRICE,
-                gradingService.MIN_FLOOR - 1,
-                gradingService.MIN_AREA - 1.0,
+                MIN_ROOMS,
+                MAX_PRICE,
+                MIN_FLOOR - 1,
+                MIN_AREA - 1.0,
                 52.4534, 29.232,
                 false);
 
@@ -65,10 +66,10 @@ public class GradingServiceSpec {
     @Test
     public void whenRoomsAndPriceAndFloorCriteriaMatches_then3PointsGiven(){
         Property property = new Property(ScrapeSource.KV, "122", "title",
-                gradingService.MIN_ROOMS,
-                gradingService.MAX_PRICE,
-                gradingService.MIN_FLOOR,
-                gradingService.MIN_AREA - 1.0,
+                MIN_ROOMS,
+                MAX_PRICE,
+                MIN_FLOOR,
+                MIN_AREA - 1.0,
                 52.4534, 29.232,
                 false);
 
@@ -80,10 +81,10 @@ public class GradingServiceSpec {
     @Test
     public void whenRoomsAndPriceAndFloorAndAreaCriteriaMatches_then4PointsGiven(){
         Property property = new Property(ScrapeSource.KV, "122", "title",
-                gradingService.MIN_ROOMS,
-                gradingService.MAX_PRICE,
-                gradingService.MIN_FLOOR,
-                gradingService.MIN_AREA,
+                MIN_ROOMS,
+                MAX_PRICE,
+                MIN_FLOOR,
+                MIN_AREA,
                 52.4534, 29.232,
                 false);
 
@@ -95,16 +96,76 @@ public class GradingServiceSpec {
     @Test
     public void whenRoomsAndPriceAndFloorAndAreaAndPriceSqMeterCriteriaMatches_then5PointsGiven(){
         Property property = new Property(ScrapeSource.KV, "122", "title",
-                gradingService.MIN_ROOMS,
-                gradingService.MAX_PRICE - 30000,
-                gradingService.MIN_FLOOR,
-                gradingService.MIN_AREA,
+                MIN_ROOMS,
+                MAX_PRICE - 30000,
+                MIN_FLOOR,
+                MIN_AREA,
                 52.4534, 29.232,
                 false);
 
         int points = gradingService.calculatePreliminaryPoints(property);
 
         assertEquals(5, points);
+    }
+
+    @Test
+    public void whenDiscouragingWordAppears_thenDecreasesPoint(){
+        Property property = new Property(ScrapeSource.KV, "122", "dsfgdfghdhlasnamägisdghfhf",
+                MIN_ROOMS - 1,
+                MAX_PRICE + 1,
+                MIN_FLOOR - 1,
+                MIN_AREA - 1.0,
+                52.4534, 29.232,
+                false);
+
+        int points = gradingService.calculatePreliminaryPoints(property);
+
+        assertEquals(-1, points);
+    }
+
+    @Test
+    public void whenEncouragingWordAppears_thenDIncreasesPoint(){
+        Property property = new Property(ScrapeSource.KV, "122", "dsfgdfghdhkesklinnsdghfhf",
+                MIN_ROOMS - 1,
+                MAX_PRICE + 1,
+                MIN_FLOOR - 1,
+                MIN_AREA - 1.0,
+                52.4534, 29.232,
+                false);
+
+        int points = gradingService.calculatePreliminaryPoints(property);
+
+        assertEquals(1, points);
+    }
+
+    @Test
+    public void whenDiscouragingAndEncouragingWordsAppears_thenNoPointChange(){
+        Property property = new Property(ScrapeSource.KV, "122", "dsfgdflasnamägighdhkesklinnsdghfhf",
+                MIN_ROOMS - 1,
+                MAX_PRICE + 1,
+                MIN_FLOOR - 1,
+                MIN_AREA - 1.0,
+                52.4534, 29.232,
+                false);
+
+        int points = gradingService.calculatePreliminaryPoints(property);
+
+        assertEquals(0, points);
+    }
+
+    @Test
+    public void whenAllMatches_thenNReturnsMaxPoints(){
+        Property property = new Property(ScrapeSource.KV, "122", "dsfgdfkesklinnsdghfhf",
+                MIN_ROOMS,
+                MAX_PRICE - 30000,
+                MIN_FLOOR,
+                MIN_AREA,
+                52.4534, 29.232,
+                false);
+
+        int points = gradingService.calculatePreliminaryPoints(property);
+
+        assertEquals(6, points);
     }
 
 }

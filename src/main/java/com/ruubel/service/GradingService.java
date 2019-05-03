@@ -12,18 +12,41 @@ public class GradingService {
     public static Double LONGITUDE_TLN = 24.753574699999945;
 
     // CONFIG:
-    public final long MAX_PRICE = 70000;
-    public final int MAX_PRICE_SQM = 1900;
-    public final double MIN_AREA = 30.0;
-    public final int MIN_ROOMS = 1;
-    public final int MIN_FLOOR = 1;
-    public final int MAX_FLOOR = 5;
-    public final int MAX_DISTANCE_FROM_CENTER_METERS = 2500;
+    public final static long MAX_PRICE     = 70000;
+    public final static int MAX_PRICE_SQM  = 1900;
+    public final static double MIN_AREA    = 30.0;
+    public final static int MIN_ROOMS      = 1;
+    public final static int MIN_FLOOR      = 1;
+    public final static int MAX_FLOOR      = 5;
+    public final static int DIST_METERS    = 2500;
 
+    public final static String[] encouragingWords = new String[]{
+        "kesklinn"
+    };
+    public final static String[] discouragingWords = new String[]{
+        "lasnamägi"
+    };
+
+    // Max points possible 6
     public int calculatePreliminaryPoints(Property property) {
         int points = 0;
         if (property.getPrice() <= MAX_PRICE) {
             points++;
+        }
+
+        String title = property.getTitle().toLowerCase();
+        for (String encouragingWord : encouragingWords) {
+            if (title.contains(encouragingWord)) {
+                points++;
+                break;
+            }
+        }
+
+        for (String discouragingWord : discouragingWords) {
+            if (title.contains(discouragingWord)) {
+                points--;
+                break;
+            }
         }
 
         Double pricePerSqm = property.getPrice() / property.getArea();
@@ -51,7 +74,7 @@ public class GradingService {
             return 0;
         }
         Double distance = ScraperUtils.distance(LATITUDE_TLN, property.getLatitude(), LONGITUDE_TLN, property.getLongitude());
-        if (distance <= MAX_DISTANCE_FROM_CENTER_METERS) {
+        if (distance <= DIST_METERS) {
             return 1;
         }
         return 0;

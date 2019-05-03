@@ -19,7 +19,13 @@ public class GradingServiceSpec {
 
     @Test
     public void whenNoCriteriaMatches_then0PointsGiven(){
-        Property property = new Property(ScrapeSource.KV, "122", "title", 0, 150000l, 1, 29.5, 52.4534, 29.232, false);
+        Property property = new Property(ScrapeSource.KV, "122", "title",
+                gradingService.MIN_ROOMS - 1,
+                gradingService.MAX_PRICE + 1,
+                gradingService.MIN_FLOOR - 1,
+                gradingService.MIN_AREA - 1.0,
+                52.4534, 29.232,
+                false);
 
         int points = gradingService.calculatePreliminaryPoints(property);
 
@@ -28,7 +34,13 @@ public class GradingServiceSpec {
 
     @Test
     public void whenRoomsCriteriaMatches_then1PointsGiven(){
-        Property property = new Property(ScrapeSource.KV, "122", "title", 1, 150000l, 1, 29.5, 52.4534, 29.232, false);
+        Property property = new Property(ScrapeSource.KV, "122", "title",
+                gradingService.MIN_ROOMS,
+                gradingService.MAX_PRICE + 1,
+                gradingService.MIN_FLOOR - 1,
+                gradingService.MIN_AREA - 1.0,
+                52.4534, 29.232,
+                false);
 
         int points = gradingService.calculatePreliminaryPoints(property);
 
@@ -37,7 +49,13 @@ public class GradingServiceSpec {
 
     @Test
     public void whenRoomsAndPriceCriteriaMatches_then2PointsGiven(){
-        Property property = new Property(ScrapeSource.KV, "122", "title", 1, 64000l, 1, 29.5, 52.4534, 29.232, false);
+        Property property = new Property(ScrapeSource.KV, "122", "title",
+                gradingService.MIN_ROOMS,
+                gradingService.MAX_PRICE,
+                gradingService.MIN_FLOOR - 1,
+                gradingService.MIN_AREA - 1.0,
+                52.4534, 29.232,
+                false);
 
         int points = gradingService.calculatePreliminaryPoints(property);
 
@@ -46,7 +64,13 @@ public class GradingServiceSpec {
 
     @Test
     public void whenRoomsAndPriceAndFloorCriteriaMatches_then3PointsGiven(){
-        Property property = new Property(ScrapeSource.KV, "122", "title", 1, 64000l, 2, 29.5, 52.4534, 29.232, false);
+        Property property = new Property(ScrapeSource.KV, "122", "title",
+                gradingService.MIN_ROOMS,
+                gradingService.MAX_PRICE,
+                gradingService.MIN_FLOOR,
+                gradingService.MIN_AREA - 1.0,
+                52.4534, 29.232,
+                false);
 
         int points = gradingService.calculatePreliminaryPoints(property);
 
@@ -54,17 +78,14 @@ public class GradingServiceSpec {
     }
 
     @Test
-    public void whenRoomsAndPriceNotFloorCriteriaMatches_then2PointsGiven(){
-        Property property = new Property(ScrapeSource.KV, "122", "title", 1, 64000l, 6, 29.5, 52.4534, 29.232, false);
-
-        int points = gradingService.calculatePreliminaryPoints(property);
-
-        assertEquals(2, points);
-    }
-
-    @Test
     public void whenRoomsAndPriceAndFloorAndAreaCriteriaMatches_then4PointsGiven(){
-        Property property = new Property(ScrapeSource.KV, "122", "title", 1, 64000l, 2, 30.0, 52.4534, 29.232, false);
+        Property property = new Property(ScrapeSource.KV, "122", "title",
+                gradingService.MIN_ROOMS,
+                gradingService.MAX_PRICE,
+                gradingService.MIN_FLOOR,
+                gradingService.MIN_AREA,
+                52.4534, 29.232,
+                false);
 
         int points = gradingService.calculatePreliminaryPoints(property);
 
@@ -73,7 +94,13 @@ public class GradingServiceSpec {
 
     @Test
     public void whenRoomsAndPriceAndFloorAndAreaAndPriceSqMeterCriteriaMatches_then5PointsGiven(){
-        Property property = new Property(ScrapeSource.KV, "122", "title", 1, 64000l, 2, 50.0, 52.4534, 29.232, false);
+        Property property = new Property(ScrapeSource.KV, "122", "title",
+                gradingService.MIN_ROOMS,
+                gradingService.MAX_PRICE - 30000,
+                gradingService.MIN_FLOOR,
+                gradingService.MIN_AREA,
+                52.4534, 29.232,
+                false);
 
         int points = gradingService.calculatePreliminaryPoints(property);
 

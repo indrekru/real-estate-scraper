@@ -45,7 +45,8 @@ public class ScrapeJob {
     @Scheduled(cron = "0 0/20 * * * ?") // Every 20 minutes
     public void run() {
         log.info("Running job");
-        Document document = getDocument(url);
+        String rawDocument = getDocument(url);
+        Document document = Jsoup.parse(rawDocument);
         try {
 
             Elements allProperties = document.select("tr.object-type-apartment.object-item");
@@ -96,18 +97,30 @@ public class ScrapeJob {
                 // Grading, max points 6
                 int points = gradingService.calculatePreliminaryPoints(dbProperty);
 
-                if (points > 4){
+                if (points >= 5){
                     // Interesting, fetch location
                     log.info("Fetching location...");
 
-                    Document propertyDocument = getDocument(propertyUrl);
+                    String rawPropertyDocument = getDocument(propertyUrl);
+                    Document propertyDocument = Jsoup.parse(rawPropertyDocument);
 
                     if (propertyDocument != null) {
+
+                        if (rawPropertyDocument.contains("puitmaja")
+                                || rawPropertyDocument.contains("palkmaja")) {
+                            // Wooden buildings get a penalty
+                            points--;
+                        } else if (rawPropertyDocument.contains("kivimaja")
+                                || rawPropertyDocument.contains("paneelmaja")) {
+                            // Rock buildings get praised
+                            points++;
+                        }
+
                         Elements mapImgs = propertyDocument.select("a.gtm-object-map");
                         if (mapImgs.size() > 0) {
                             Element mapImg = mapImgs.get(0);
                             String imgUrl = mapImg.attr("href");
-                            String coords = imgUrl.substring(imgUrl.indexOf("query=") + 6, imgUrl.length());
+                            String coords = imgUrl.substring(imgUrl.indexOf("query=") + 6);
                             String[] coordsArr = coords.split(",");
 
                             latitude = Double.parseDouble(coordsArr[0]);
@@ -123,7 +136,8 @@ public class ScrapeJob {
 
                 propertyService.save(dbProperty);
 
-                if (points > 4) {
+                // Max points 8
+                if (points >= 6) {
                     log.info("Notifying : " + propertyUrl + ", score: " + points);
                     mailingService.notifyQualifiedProperty(propertyUrl);
                     dbProperty.setNotified(true);
@@ -139,7 +153,7 @@ public class ScrapeJob {
         }
     }
 
-    private Document getDocument(String url) {
+    private String getDocument(String url) {
         Connection connection = Jsoup.connect(url);
         connection.validateTLSCertificates(false);
         connection.timeout(60000);
@@ -147,8 +161,8 @@ public class ScrapeJob {
         connection.userAgent(userAgent);
         connection.cookies(new HashMap<>());
         try {
-            Document document = connection.execute().parse();
-            return document;
+            Connection.Response response = connection.execute();
+            return response.body();
         } catch (IOException e) {
             e.printStackTrace();
             return null;

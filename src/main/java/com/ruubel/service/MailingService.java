@@ -25,8 +25,8 @@ public class MailingService {
     private String apiKey = "406970c11818cb958bea6a9b6bd6b2e0";
     private String otherApiKey = "7d9a8dbb758d0da19c1321bdf37f2f20";
 
-    public void notifyQualifiedProperty(String propertyUrl) {
-        send("Interesting real estate", "Check it out: " + propertyUrl);
+    public void notifyQualifiedProperty(String propertyUrl, int points) {
+        send("Real estate, pts: " + points, "Points: " + points + ", url: " + propertyUrl);
     }
 
     public void notifyCrash() {

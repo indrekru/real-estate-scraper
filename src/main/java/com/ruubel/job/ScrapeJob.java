@@ -139,7 +139,7 @@ public class ScrapeJob {
                 // Max points 8
                 if (points >= 6) {
                     log.info("Notifying : " + propertyUrl + ", score: " + points);
-                    mailingService.notifyQualifiedProperty(propertyUrl);
+                    mailingService.notifyQualifiedProperty(propertyUrl, points);
                     dbProperty.setNotified(true);
                     propertyService.save(dbProperty);
                 }

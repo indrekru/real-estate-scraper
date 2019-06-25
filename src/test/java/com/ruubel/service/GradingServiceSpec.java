@@ -97,7 +97,7 @@ public class GradingServiceSpec {
     public void whenRoomsAndPriceAndFloorAndAreaAndPriceSqMeterCriteriaMatches_then5PointsGiven(){
         Property property = new Property(ScrapeSource.KV, "122", "title",
                 MIN_ROOMS,
-                MAX_PRICE - 30000,
+                MAX_PRICE - 50000,
                 MIN_FLOOR,
                 MIN_AREA,
                 52.4534, 29.232,
@@ -157,7 +157,7 @@ public class GradingServiceSpec {
     public void whenAllMatches_thenNReturnsMaxPoints(){
         Property property = new Property(ScrapeSource.KV, "122", "dsfgdfkesklinnsdghfhf",
                 MIN_ROOMS,
-                MAX_PRICE - 30000,
+                MAX_PRICE - 40000,
                 MIN_FLOOR,
                 MIN_AREA,
                 52.4534, 29.232,

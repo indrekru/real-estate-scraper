@@ -13,7 +13,7 @@ public class GradingService {
 
     // CONFIG:
     public final static long MAX_PRICE     = 100000;
-    public final static int MAX_PRICE_SQM  = 2200;
+    public final static int MAX_PRICE_SQM  = 2300;
     public final static double MIN_AREA    = 30.0;
     public final static int MIN_ROOMS      = 1;
     public final static int MIN_FLOOR      = 1;

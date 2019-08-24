@@ -18,7 +18,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 
 @Component
@@ -34,12 +41,14 @@ public class ScrapeJob {
     private IPropertyService propertyService;
     private MailingService mailingService;
     private GradingService gradingService;
+    private SSLSocketFactory sslSocketFactory;
 
     @Autowired
     public ScrapeJob(IPropertyService propertyService, MailingService mailingService, GradingService gradingService) {
         this.propertyService = propertyService;
         this.mailingService = mailingService;
         this.gradingService = gradingService;
+        this.sslSocketFactory = socketFactory();
     }
 
     @Scheduled(cron = "0 0/20 * * * ?") // Every 20 minutes
@@ -137,7 +146,7 @@ public class ScrapeJob {
                 propertyService.save(dbProperty);
 
                 // Max points 8
-                if (points >= 6) {
+                if (points >= 8) {
                     log.info("Notifying : " + propertyUrl + ", score: " + points);
                     mailingService.notifyQualifiedProperty(propertyUrl, points);
                     dbProperty.setNotified(true);
@@ -155,7 +164,7 @@ public class ScrapeJob {
 
     private String getDocument(String url) {
         Connection connection = Jsoup.connect(url);
-        connection.validateTLSCertificates(false);
+        connection.sslSocketFactory(sslSocketFactory);
         connection.timeout(60000);
         connection.method(Connection.Method.GET);
         connection.userAgent(userAgent);
@@ -168,4 +177,28 @@ public class ScrapeJob {
             return null;
         }
     }
+
+
+    private SSLSocketFactory socketFactory() {
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {
+            }
+
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {
+            }
+        }};
+
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            return sslContext.getSocketFactory();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            throw new RuntimeException("Failed to create a SSL socket factory", e);
+        }
+    }
+
 }

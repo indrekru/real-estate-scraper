@@ -12,7 +12,7 @@ public class GradingService {
     public static Double LONGITUDE_TLN = 24.753574699999945;
 
     // CONFIG:
-    public final static long MAX_PRICE     = 50000;
+    public final static long MAX_PRICE     = 40000;
     public final static int MAX_PRICE_SQM  = 3000;
     public final static double MIN_AREA    = 10.0;
     public final static int MIN_ROOMS      = 1;
